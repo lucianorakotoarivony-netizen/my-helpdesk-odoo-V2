@@ -7,7 +7,6 @@ Gestionnaire de tickets helpdesk conçu pour une équipe d'agents avec manager.
 - ✅ **Ajout de tests** : 24 tests pour valider les actions et la sécurité
 - ✅ **Notifications automatiques** : temps réel via bus Odoo
 - ✅ **Architecture clarifiée** : séparation manager/tech dans des fichiers dédiés
-- ✅ **Wizards chaînés** : confirmation en 3 étapes avant action critique
 - ✅ **Sécurité renforcée** : groupes et règles d'accès
 
 ## 🚀 Ce que fait ce module
