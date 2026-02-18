@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <!-- Notification pour les techs -->
+<record id="cron_ticket_reminder_pending" model="ir.cron">
+        <field name="name">Rappel ticket en attente</field>
+        <field name="model_id" ref="model_helpdesk_notifier_technicien"/>
+        <field name="state">code</field>
+        <field name="code">model.ticket_pending()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+</record>
+        <!-- Notification pour les techs et manager -->
+<record id="cron_notifier_ticket_in_progress" model="ir.cron">
+        <field name="name">Rappel ticket en cours pas encore résolu</field>
+        <field name="model_id" ref="model_helpdesk_notifier_manager_and_technicien"/>
+        <field name="state">code</field>
+        <field name="code">model.notifier_ticket_in_progress()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+</record>
+</odoo>

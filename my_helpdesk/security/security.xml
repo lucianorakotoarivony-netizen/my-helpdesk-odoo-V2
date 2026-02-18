@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="module_category_my_helpdesk" model="ir.module.category">
+            <field name="name">Helpdesk</field>
+            <field name="sequence">10</field>
+        </record>
+        <record model="res.groups.privilege" id="res_groups_privilege_helpdesk">
+            <field name="name">Helpdesk</field>
+            <field name="sequence">1</field>
+            <field name="category_id" ref="module_category_my_helpdesk"/>
+        </record>
+        <record id="group_my_helpdesk_technicien" model="res.groups">
+            <field name="name">Technicien</field>
+        <field name="privilege_id" ref="res_groups_privilege_helpdesk"/>
+        </record>
+        <record id="group_my_helpdesk_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="privilege_id" ref="res_groups_privilege_helpdesk"/>
+        </record>
+        <record id="rule_tech_tickets" model="ir.rule">
+            <field name="name">Technicien : Ne voit pas les drafts et assignés aux autres</field>
+            <field name="model_id" ref="model_helpdesk_ticket"/>
+            <field name="domain_force">[('state', 'not in', ['draft']),'|', ('assigned_to_id', 'in', [False]), ('assigned_to_id', 'in', [user.id])]</field>
+            <field name="groups" eval="[(4, ref('my_helpdesk.group_my_helpdesk_technicien'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+    </data>
+</odoo>

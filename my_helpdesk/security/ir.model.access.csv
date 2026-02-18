@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_helpdesk_ticket_technicien,helpdesk.ticket.technicien,model_helpdesk_ticket,my_helpdesk.group_my_helpdesk_technicien,1,1,0,0
+access_helpdesk_ticket_manager,helpdesk.ticket.manager,model_helpdesk_ticket,my_helpdesk.group_my_helpdesk_manager,1,1,1,1
+access_helpdesk_confirm_wizard,helpdesk.confirm.wizard,model_helpdesk_confirm_wizard,my_helpdesk.group_my_helpdesk_technicien,1,1,1,0
+access_helpdesk_cancellation_request_wizard,helpdesk.cancellation.request.wizard,model_helpdesk_cancellation_request_wizard,my_helpdesk.group_my_helpdesk_manager,1,1,1,0

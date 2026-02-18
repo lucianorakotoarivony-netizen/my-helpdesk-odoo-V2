@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+                        <!-- VUE LISTE -->
+    <record id="view_my_helpdesk_ticket_list" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.list</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <list string="Tickets">
+                <field name="customer_name"/>
+                <field name="title"/>
+                <field name="description"/>
+                <field name="priority"/>
+                <field name="state"/>
+                <field name="assigned_to_id"/>
+                <field name="validated_by_id"/>
+                <field name="reason_for_cancellation" widget="ticket_watcher"/>
+            </list>
+        </field>
+    </record>
+
+                        <!-- WIZARD 3 POP UP -->
+    <record id="view_my_helpdesk_confirm_wizard_form" model="ir.ui.view">
+        <field name="name">helpdesk.confirm.wizard.form</field>
+        <field name="model">helpdesk.confirm.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="message" readonly="1"/>
+                </header>
+                    <sheet>
+                        <group>
+                            <field name="tickets_id" readonly="1"/>
+                        </group>
+                    </sheet>
+                <footer>
+                    <button name="action_next_step" string="Continuer" type="object" class="btn-primary"/>
+                    <button string="Annuler" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+                        <!-- WIZARD DEMANDE D'ANNULATION -->
+    <record id="view_my_helpdesk_cancellation_request_form" model="ir.ui.view">
+        <field name="name">helpdesk.cancellation.request.wizard.form</field>
+        <field name="model">helpdesk.cancellation.request.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="reason_for_cancellation"/>
+                </header>
+                    <sheet>
+                        <group>
+                            <field name="tickets_id" readonly="1"/>
+                        </group>
+                    </sheet>
+                <footer>
+                    <button name="action_send_cancellation_request" 
+                    string="envoyer" 
+                    type="object" 
+                    class="btn-primary" 
+                    confirm="T'es sûr? Ca serait plutôt marrant de voir le tech faire ça pour rien" />
+                    <button string="Annuler" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+                            <!-- VUE FORMULAIRE -->
+    <record id="view_my_helpdesk_helpdesk_ticket_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Ticket">
+                <header>
+                    <button name="action_validate"
+                        string="Valider"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="is_validated"
+                        groups="my_helpdesk.group_my_helpdesk_manager"/>
+                    <button name="action_modify"
+                        string="Modifier"
+                        type="object"
+                        invisible="not is_validated or state != 'draft'"
+                        groups="my_helpdesk.group_my_helpdesk_manager"/>
+                    <button name="action_progress_verifying_higher_priority_assigned"
+                        string="Executer"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="state !='new' or reason_for_cancellation"
+                        groups="my_helpdesk.group_my_helpdesk_technicien"/>
+                    <button name="action_done"
+                        string="Résolu"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="state!='in_progress' or reason_for_cancellation"
+                        groups="my_helpdesk.group_my_helpdesk_technicien"/>
+                    <button name="action_done"
+                        string="Résolu"
+                        type="object"
+                        class="btn-warning"
+                        confirm="T'es sûr? Le manager veut annuler ce ticket."
+                        context="{'acknowledged_cancellation':True}"
+                        invisible="state!='in_progress' or not reason_for_cancellation"
+                        groups="my_helpdesk.group_my_helpdesk_technicien"/>
+                    <button name="action_send"
+                        string="Envoyer"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="not is_validated or state != 'draft'"
+                        confirm="Attention, cette action est irréversible. Je rigole, tu pourras annuler juste après si besoin.."
+                        groups="my_helpdesk.group_my_helpdesk_manager"/>
+                    <button name="action_manager_cancel"
+                        string="Annuler"
+                        type="object"
+                        invisible="state not in ['new','cancelled']"
+                        confirm="Je suis juste là pour te demander si t'es sûr."
+                        groups="my_helpdesk.group_my_helpdesk_manager"/>
+                    <button name="action_tech_cancel"
+                        string="Annuler"
+                        type="object"
+                        invisible="assigned_to_id == False or state !='in_progress'"
+                        confirm="Je suis juste là pour te demander si t'es sûr."
+                        groups="my_helpdesk.group_my_helpdesk_technicien"/>
+                    <button name="action_cancellation_request"
+                        string="Demande d'annulation"
+                        type="object"
+                        invisible="state != 'in_progress' or reason_for_cancellation"
+                        groups="my_helpdesk.group_my_helpdesk_manager"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="customer_name" readonly="is_validated"/>
+                        <field name="title" readonly="is_validated"/>
+                        <field name="description" readonly="is_validated"/>
+                        <field name="priority" readonly="is_validated"/>
+                        <field name="is_validated" invisible="1"/> 
+                        <field name="validated_by_id" invisible="not is_validated"/>
+                        <field name="validation_date" invisible="not is_validated"/>
+                        <field name="assigned_to_id"/>
+                        <field name="reason_for_cancellation"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+                        <!-- ACTION MANAGER -->
+    <record id="action_helpdesk_ticket_for_manager" model="ir.actions.act_window">
+        <field name="name">Tickets helpdesk</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier ticket
+            </p>
+        </field>
+    </record>
+
+                        <!-- ACTION TECH -->
+    <record id="action_helpdesk_ticket_for_technicien" model="ir.actions.act_window">
+        <field name="name">Tickets helpdesk</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aller faire un tour. Aucun ticket pour le moment
+            </p>
+        </field>
+    </record>
+
+                        <!-- MENU -->
+    <menuitem id="menu_helpdesk_root" 
+        name="Helpdesk" 
+        sequence="10"/>
+    <menuitem id="menu_helpdesk_ticket_manager" 
+        parent="menu_helpdesk_root" 
+        name="Tickets (Manager)" 
+        action="action_helpdesk_ticket_for_manager" 
+        groups="my_helpdesk.group_my_helpdesk_manager"
+        sequence="10"/>
+    <menuitem id="menu_helpdesk_ticket_technicien"
+        parent="menu_helpdesk_root"
+        name="Tickets (Technicien)"
+        action="action_helpdesk_ticket_for_technicien"
+        groups="my_helpdesk.group_my_helpdesk_technicien"
+        sequence="20"/>
+</odoo>

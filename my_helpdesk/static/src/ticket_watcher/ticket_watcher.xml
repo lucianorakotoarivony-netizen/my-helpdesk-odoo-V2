@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve" owl="1">
+    <t t-name="my_helpdesk.TicketWatcherTemplate">
+        <div class="o_ticket_watcher">
+            <t t-if="state.reason">
+                <div class="alert alert-warning">
+                    <strong>⚠️ Demande d&#39;annulation : </strong>
+                    <span t-esc="state.reason"/>
+                </div>
+            </t>
+            <t t-else="">
+                <p class="text-muted">Aucune demande d&#39;annulation</p>
+            </t>
+        </div>
+    </t>
+</templates>
