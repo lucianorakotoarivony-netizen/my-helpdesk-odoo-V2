@@ -7,7 +7,6 @@ Gestionnaire de tickets helpdesk conçu pour une équipe d'agents avec manager.
 - ✅ **Ajout de tests** : 24 tests pour valider les actions et la sécurité
 - ✅ **Notifications automatiques** : temps réel via bus Odoo
 - ✅ **Architecture clarifiée** : séparation manager/tech dans des fichiers dédiés
-- ✅ **Wizards chaînés** : confirmation en 3 étapes avant action critique
 - ✅ **Sécurité renforcée** : groupes et règles d'accès
 
 ## 🚀 Ce que fait ce module
@@ -73,3 +72,4 @@ PS C:\Users\Username\Desktop\odoo-dev-app\custom-addons\my_helpdesk> docker-comp
 2026-02-18 16:02:14,752 1 INFO odoo_test odoo.service.server: Initiating shutdown
 2026-02-18 16:02:14,752 1 INFO odoo_test odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown.
 2026-02-18 16:02:15,165 1 INFO odoo_test odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 2 connections
+
